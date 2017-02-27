@@ -23,3 +23,12 @@ function check()
 {
     return $1
 }
+
+function publish()
+{
+	read -p "Version: " version
+	sed -i "s#$VERSION#$version#" .proj128
+	sed -i "s#$VERSION#$version#" package.json
+	git tag $version
+	npm publish
+}
