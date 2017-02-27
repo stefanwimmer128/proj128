@@ -1,0 +1,25 @@
+VERSION="1.0.0-alpha.1"
+
+function install()
+{
+    local dist="$(readlink -f "${1:-/usr/bin}")/proj128"
+    [ -f "$dist" ] && rm "$dist"
+    cp "proj128" "$dist"
+    sed -i "s#\${VERSION}#$VERSION#" "$dist"
+}
+
+function test()
+{
+    if ./proj128 check 0 && ! ./proj128 check 1
+    then
+        echo "Test ok"
+    else
+        echo "Test failed"
+        return 1
+    fi
+}
+
+function check()
+{
+    return $1
+}
