@@ -35,3 +35,10 @@ function check()
 {
     return $1
 }
+
+function publish()
+{
+    yarn publish || exit
+    git push || exit
+    git push --tags
+}
