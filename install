@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+DIR="$(dirname "$(readlink -f "$0" )")"
+
+"$DIR/bin/proj128" -p "$DIR" install "$@"

@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+export DIR="$PWD"
+export PROJECT="$1"
+export SCRIPT="$2"
+export ARGV=( "${@:3}" )
+
+if [ ! -f "$PROJECT/.proj128" ]
+then
+    echo "No .proj128 file found in: $PROJECT"
+    exit 128
+fi
+
+if [ -d "$PROJECT/node_modules" ] && [ -d "$PROJECT/node_modules/.bin" ] && [[ ! "$PATH" == *"$PROJECT/node_modules/.bin:"* ]]
+then
+    export PATH="$PROJECT/node_modules/.bin:$PATH"
+fi
+
+source "$PROJECT/.proj128" || >(
+    echo "Error in .proj128 in : $PROJECT"
+    exit 129
+)
+
+if [ "$(type -t "$SCRIPT")" == "function" ]
+then
+    eval "$SCRIPT" "${ARGV[@]}"
+fi

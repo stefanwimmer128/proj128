@@ -1,15 +1,22 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from argparse import ArgumentParser, REMAINDER
+from os import getcwd, path
 from subprocess import call
 
 argparse = ArgumentParser(description = "Project 128 - Project Manager")
 
 argparse.add_argument("-v", "--version", action = "version", version = "${VERSION}")
 
+argparse.add_argument("-p", "--project", default = getcwd())
+
 argparse.add_argument("script", help = "script to execute")
 argparse.add_argument("args", help = "arguments to execute script with", nargs = REMAINDER)
 
 args = argparse.parse_args()
 
-exit(call([ "bash", "-c", "source .proj128 && " + args.script + " \"" + "\" \"".join(args.args) + "\"" ]))
+exit(call([
+    path.realpath(path.dirname(path.realpath(__file__)) + "/../cli/proj128"),
+    path.realpath(args.project),
+    args.script
+] + args.args))

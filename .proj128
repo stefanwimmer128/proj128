@@ -1,16 +1,28 @@
-VERSION="1.0.0-beta.0"
+function proj128()
+{
+    ./bin/proj128 "$@"
+}
 
 function install()
 {
-    local dist="$(readlink -f "${1:-/usr/bin}")/proj128"
-    [ -f "$dist" ] && rm "$dist"
-    cp "proj128" "$dist"
-    sed -i "s#\${VERSION}#$VERSION#" "$dist"
+    if [ -d "$HOME/.proj128" ]
+    then
+        echo "Project 128 is already installed! Override?"
+        read -p "[Y|n] " confirm
+        [ "${confirm,,}" == "n" ] && exit
+        rm -dfr "$HOME/.proj128"
+    fi
+    cp -R "$PROJECT" "$HOME/.proj128"
+    [ -d "$HOME/.proj128/.git" ] && rm -dfr "$HOME/.proj128/.git"
+    if [[ ! "$PATH" == *"$HOME/.proj128/bin"* ]]
+    then
+        echo -e "\nexport PATH=\"\$HOME/.proj128/bin:\$PATH\"" >> "$HOME/.bashrc"
+    fi
 }
 
 function test()
 {
-    if ./proj128 check 0 && ! ./proj128 check 1
+    if proj128 check 0 && ! proj128 check 1
     then
         echo "Test ok"
     else
@@ -26,9 +38,13 @@ function check()
 
 function publish()
 {
-	read -p "Version: " version
-	sed -i "s#$VERSION#$version#" .proj128
-	sed -i "s#$VERSION#$version#" package.json
-	git tag $version
-	npm publish
+    cd "$PROJECT"
+    local version="$(cat package.json | jq -r .version)"
+	read -p "Version: ($version) " version
+    cat package.json | jq ". * { \"version\": \"$version\" }" > package.json
+    git commit -a -m "$version"
+    git tag "$version"
+    git push
+    git push --tags
+	yarn publish
 }
