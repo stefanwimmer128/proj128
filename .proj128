@@ -45,6 +45,7 @@ function publish()
     sed -i "s#$version#$version2#" package.json
     npm publish
     git commit -a -m "$version2"
+    git tag "$version2"
     git push
     git push --tags
 }
