@@ -42,8 +42,9 @@ function publish()
     local version="$(cat package.json | jq -r .version)"
     read -p "Version: ($version) " version2
     sed -i "s#$version#$version2#" bin/proj128
-    git add bin/proj128
-    yarn publish <<< "$version2" || exit
-    git push || exit
+    sed -i "s#$version#$version2#" package.json
+    npm publish
+    git commit -a -m "$version2"
+    git push
     git push --tags
 }
