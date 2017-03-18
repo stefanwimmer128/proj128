@@ -1,6 +1,6 @@
 {
   "name": "proj128",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Project 128",
   "repository": {
     "type": "git",
@@ -13,6 +13,6 @@
   },
   "homepage": "https://github.com/stefanwimmer128/proj128#readme",
   "bin": {
-    "proj128": "proj128"
+    "proj128": "bin/proj128"
   }
 }
