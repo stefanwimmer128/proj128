@@ -35,16 +35,3 @@ function check()
 {
     return $1
 }
-
-function publish()
-{
-    cd "$PROJECT"
-    local version="$(cat package.json | jq -r .version)"
-	read -p "Version: ($version) " version
-    cat package.json | jq ". * { \"version\": \"$version\" }" > package.json
-    git commit -a -m "$version"
-    git tag "$version"
-    git push
-    git push --tags
-	yarn publish
-}
