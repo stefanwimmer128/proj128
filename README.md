@@ -1,4 +1,6 @@
-# Project 128
+# proj128
+
+Project 128 - Project Manager
 
 ## How to install?
 

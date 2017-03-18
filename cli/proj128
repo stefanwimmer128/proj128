@@ -11,7 +11,7 @@ then
     exit 128
 fi
 
-if [ -d "$PROJECT/node_modules" ] && [ -d "$PROJECT/node_modules/.bin" ] && [[ ! "$PATH" == *"$PROJECT/node_modules/.bin:"* ]]
+if [ -d "$PROJECT/node_modules" ] && [ -d "$PROJECT/node_modules/.bin" ] && ! [[ "$PATH" =~ (^|:)"$PROJECT/node_modules/.bin"(:|$) ]]
 then
     export PATH="$PROJECT/node_modules/.bin:$PATH"
 fi
