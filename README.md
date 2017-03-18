@@ -3,11 +3,7 @@
 ## How to install?
 
 ``` bash
-# Clone repository
-$ git clone https://github.com/stefanwimmer128/proj128.git
-
-# Install Project 128
-$ proj128/install
+$ curl https://raw.githubusercontent.com/stefanwimmer128/proj128/master/install | bash
 ```
 
 ## How to use?
