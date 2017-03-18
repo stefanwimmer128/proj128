@@ -1,5 +1,28 @@
 #!/usr/bin/env bash
 
-DIR="$(dirname "$(readlink -f "$0" )")"
+PROJ128_DIR="$(readlink -f "${PROJ128_DIR:-$HOME/.proj128}")"
 
-"$DIR/bin/proj128" -p "$DIR" install "$@"
+if [ -d "$PROJ128_DIR" ]
+then
+    rm -dfr "$PROJ128_DIR"
+fi
+
+git clone https://github.com/stefanwimmer128/proj128.git "$PROJ128_DIR"
+cd "$PROJ128_DIR"
+tag="$(git describe --tags $(git rev-list --tags --max-count=1))"
+git checkout tags/$tag &> /dev/null
+rm -dfr "$PROJ128/.git"
+
+if [[ "$PROJ128_DIR" == "$HOME"* ]]
+then
+    PROJ128_DIR="\$HOME${PROJ128_DIR#$HOME}"
+fi
+
+if ! which proj128 &> /dev/null
+then
+    cat >> "$HOME/.bashrc" << eof
+
+export PROJ128_DIR="${PROJ128_DIR//$HOME/\$HOME}"
+export PATH="\$PROJ128_DIR/bin:\$PATH"
+eof
+fi

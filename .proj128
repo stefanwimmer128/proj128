@@ -1,41 +1,3 @@
-function proj128()
-{
-    ./bin/proj128 "$@"
-}
-
-function install()
-{
-    if [ -d "$HOME/.proj128" ]
-    then
-        echo "Project 128 is already installed! Override?"
-        read -p "[Y|n] " confirm
-        [ "${confirm,,}" == "n" ] && exit
-        rm -dfr "$HOME/.proj128"
-    fi
-    cp -R "$PROJECT" "$HOME/.proj128"
-    [ -d "$HOME/.proj128/.git" ] && rm -dfr "$HOME/.proj128/.git"
-    if [[ ! "$PATH" == *"$HOME/.proj128/bin"* ]]
-    then
-        echo -e "\nexport PATH=\"\$HOME/.proj128/bin:\$PATH\"" >> "$HOME/.bashrc"
-    fi
-}
-
-function test()
-{
-    if proj128 check 0 && ! proj128 check 1
-    then
-        echo "Test ok"
-    else
-        echo "Test failed"
-        return 1
-    fi
-}
-
-function check()
-{
-    return $1
-}
-
 function publish()
 {
     cd "$PROJECT"
@@ -43,6 +5,7 @@ function publish()
     read -p "Version: ($version) " version2
     sed -i "s#$version#$version2#" bin/proj128
     sed -i "s#$version#$version2#" package.json
+    git add bin/proj128 package.json
     npm publish
     git commit -a -m "$version2"
     git tag "$version2"
