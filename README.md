@@ -6,6 +6,10 @@ Project 128 - Project Manager
 
 ``` bash
 $ curl https://raw.githubusercontent.com/stefanwimmer128/proj128/master/install | bash
+
+$ yarn (global) add proj128
+
+$ npm i (-g) proj128
 ```
 
 ## How to use?
