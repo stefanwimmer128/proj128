@@ -4,6 +4,7 @@ export PROJ128_DIR="$(dirname "$(dirname "$(readlink -f "$0")")")"
 export PROJECT="$1"
 export SCRIPT="$2"
 export ARGV=( "${@:3}" )
+export PATH="$PROJ128_DIR/lib:$PATH"
 
 function proj128()
 {
