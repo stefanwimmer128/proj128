@@ -6,8 +6,8 @@ from subprocess import call
 
 argparse = ArgumentParser(description = "Project 128 - Project Manager")
 
-version = "1.3.3"
-argparse.add_argument("-v", "--version", action = "version", version = "1.3.3"
+proj128_version = "1.3.4"
+argparse.add_argument("-v", "--version", action = "version", version = proj128_version)
 
 argparse.add_argument("-p", "--project", default = getcwd(), help = "folder the project lies in (default: working directory)")
 

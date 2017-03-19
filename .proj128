@@ -4,7 +4,7 @@ function publish()
     local version="$(cat package.json | jq -r .version)"
     read -p "Version: ($version) " version2
     cat package.json | jq ". | setpath([ \"version\" ]; \"$version2\")" | tee package.json > /dev/null
-    sed -i "s#version = \"*\".*#version = \"$version2\"#" bin/proj128
+    sed -i "s#proj128_version = \"*\".*#proj128_version = \"$version2\"#" bin/proj128
     git add bin/proj128 package.json
     git commit -a -m "$version2"
     git tag "$version2"
