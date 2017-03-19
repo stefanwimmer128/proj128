@@ -3,12 +3,12 @@ function publish()
     cd "$PROJECT"
     local version="$(cat package.json | jq -r .version)"
     read -p "Version: ($version) " version2
-    sed -i "s#$version#$version2#" bin/proj128
-    sed -i "s#$version#$version2#" package.json
+    cat package.json | jq ". | setpath([ \"version\" ]; \"$version2\")" | tee package.json > /dev/null
+    sed -i "s#version = \"*\".*#version = \"$version2\"#" bin/proj128
     git add bin/proj128 package.json
-    npm publish
     git commit -a -m "$version2"
     git tag "$version2"
     git push
     git push --tags
+    npm publish
 }
