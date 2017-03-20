@@ -12,6 +12,7 @@ cd "$PROJ128_DIR"
 tag="$(git describe --tags $(git rev-list --tags --max-count=1))"
 git checkout tags/$tag &> /dev/null
 rm -dfr "$PROJ128/.git"
+echo "proj128 $tag installed!"
 
 if [[ "$PROJ128_DIR" == "$HOME"* ]]
 then
