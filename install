@@ -11,8 +11,14 @@ git clone https://github.com/stefanwimmer128/proj128.git "$PROJ128_DIR"
 cd "$PROJ128_DIR"
 tag="$(git describe --tags $(git rev-list --tags --max-count=1))"
 git checkout tags/$tag &> /dev/null
-rm -dfr "$PROJ128/.git"
-echo "proj128 $tag installed!"
+
+if ! which jq &> /dev/null
+then
+    echo "Installing jq..."
+    
+    wget -O "$PROJ128_DIR/bin/jq" "https://github.com/stedolan/jq/releases/download/$(curl -s https://api.github.com/repos/stedolan/jq/releases/latest | grep "tag_name" | cut -d\" -f4)/jq-linux64"
+    chmod a+x "$PROJ128_DIR/bin/jq"
+fi
 
 if [[ "$PROJ128_DIR" == "$HOME"* ]]
 then
@@ -27,3 +33,5 @@ export PROJ128_DIR="${PROJ128_DIR//$HOME/\$HOME}"
 export PATH="\$PROJ128_DIR/bin:\$PATH"
 eof
 fi
+
+echo "proj128 $tag installed!"
