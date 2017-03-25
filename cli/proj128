@@ -2,19 +2,19 @@
 
 export PROJ128_DIR="$(dirname "$(dirname "$(readlink -f "$0")")")"
 export PROJECT="$1"
-export SCRIPT="$2"
+export TASK="$2"
 export ARGV=( "${@:3}" )
 export PATH="$PROJ128_DIR/lib:$PATH"
-
-function proj128()
-{
-    "$PROJ128_DIR/bin/proj128" "$@"
-}
 
 if [ ! -f "$PROJECT/.proj128" ]
 then
     echo "No .proj128 file found in: $PROJECT"
     exit 128
+fi
+
+if ! [[ "$PATH" =~ (^|:)"$PROJ128_DIR/bin"(:|$) ]]
+then
+    export PATH="$PROJ128_DIR/bin:$PATH"
 fi
 
 if [ -d "$PROJECT/node_modules" ] && [ -d "$PROJECT/node_modules/.bin" ] && ! [[ "$PATH" =~ (^|:)"$PROJECT/node_modules/.bin"(:|$) ]]
@@ -27,7 +27,17 @@ source "$PROJECT/.proj128" || >(
     exit 129
 )
 
-if [ "$(type -t "$SCRIPT")" == "function" ]
-then
-    eval "$SCRIPT" "${ARGV[@]}"
-fi
+IFS=$'\n' tasks=( $(bash -c "source \"$PROJECT/.proj128\"; declare -F") )
+
+for ((i = 0; i <= ${#tasks[@]}; i++))
+do
+    if [[ "${tasks[$i]}" == *" $TASK" ]]
+    then
+        unset tasks
+        eval "$TASK" "${ARGV[@]}"
+        exit
+    fi
+done
+
+echo "Task \"$TASK\" does not exists!"
+exit 1

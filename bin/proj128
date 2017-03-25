@@ -6,18 +6,18 @@ from subprocess import call
 
 argparse = ArgumentParser(description = "Project 128 - Project Manager")
 
-proj128_version = "1.4.0"
+proj128_version = "1.5.0"
 argparse.add_argument("-v", "--version", action = "version", version = proj128_version)
 
 argparse.add_argument("-p", "--project", default = getcwd(), help = "folder the project lies in (default: working directory)")
 
-argparse.add_argument("script", help = "script to execute")
-argparse.add_argument("args", help = "arguments to execute script with", nargs = REMAINDER)
+argparse.add_argument("task", help = "task to execute")
+argparse.add_argument("args", help = "arguments to execute the task with", nargs = REMAINDER)
 
 args = argparse.parse_args()
 
 exit(call([
     path.realpath(path.dirname(path.realpath(__file__)) + "/../cli/proj128"),
     path.realpath(args.project),
-    args.script
+    args.task
 ] + args.args))
