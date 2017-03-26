@@ -7,10 +7,16 @@ then
     rm -dfr "$PROJ128_DIR"
 fi
 
-git clone https://github.com/stefanwimmer128/proj128.git "$PROJ128_DIR"
-cd "$PROJ128_DIR"
-tag="$(git describe --tags $(git rev-list --tags --max-count=1))"
-git checkout tags/$tag &> /dev/null
+if which git &> /dev/null
+then
+    git clone https://github.com/stefanwimmer128/proj128.git "$PROJ128_DIR"
+    cd "$PROJ128_DIR"
+    tag="$(git describe --tags $(git rev-list --tags --max-count=1))"
+    git checkout tags/$tag &> /dev/null
+else
+    echo "Git required for istallation!"
+    exit 1
+fi
 
 if ! which jq &> /dev/null
 then
