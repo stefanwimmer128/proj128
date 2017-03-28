@@ -14,16 +14,18 @@ then
     tag="$(git describe --tags $(git rev-list --tags --max-count=1))"
     git checkout tags/$tag &> /dev/null
 else
-    echo "Git required for istallation!"
+    echo "Git required for installation!"
     exit 1
 fi
 
-if ! which jq &> /dev/null
+if ! which wget &> /dev/null
 then
     echo "Installing jq..."
     
     wget -O "$PROJ128_DIR/bin/jq" "https://github.com/stedolan/jq/releases/download/$(curl -s https://api.github.com/repos/stedolan/jq/releases/latest | grep "tag_name" | cut -d\" -f4)/jq-linux64"
     chmod a+x "$PROJ128_DIR/bin/jq"
+else
+    echo "WGet required for installation!"
 fi
 
 if [[ "$PROJ128_DIR" == "$HOME"* ]]

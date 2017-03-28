@@ -1,11 +1,18 @@
-function publish()
+function build()
 {
     cd "$PROJECT"
     local version="$(cat package.json | jq -r .version)"
     read -p "Version: ($version) " version2
+    [ "$version2" == "" ] && version2="$version"
     cat package.json | jq ". | setpath([ \"version\" ]; \"$version2\")" | tee package.json > /dev/null
     sed -i "s#proj128_version = \"*\".*#proj128_version = \"$version2\"#" bin/proj128
-    git add bin/proj128 package.json
+}
+
+function publish()
+{
+    cd "$PROJECT"
+    proj128 build
+    git add -A
     git commit -a -m "$version2"
     git tag "$version2"
     git push
