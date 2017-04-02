@@ -34,6 +34,7 @@ do
     if [[ "${tasks[$i]}" == *" $TASK" ]]
     then
         unset tasks
+        echo "$(tput bold)+ $TASK ${ARGV[@]}$(tput sgr0)"
         eval "$TASK" "${ARGV[@]}"
         exit
     fi

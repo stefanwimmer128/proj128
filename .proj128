@@ -12,9 +12,10 @@ function publish()
 {
     cd "$PROJECT"
     proj128 build
+    local version="$(cat package.json | jq .version)"
     git add -A
-    git commit -a -m "$version2"
-    git tag "$version2"
+    git commit -a -m "$version"
+    git tag "$version"
     git push
     git push --tags
     npm publish
