@@ -18,7 +18,7 @@ else
     exit 1
 fi
 
-if ! which wget &> /dev/null
+if which wget &> /dev/null
 then
     echo "Installing jq..."
     
