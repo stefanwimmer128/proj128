@@ -5,7 +5,7 @@ Project 128 - Project Manager
 ## How to install?
 
 ``` bash
-$ curl https://raw.githubusercontent.com/stefanwimmer128/proj128/master/install | bash
+$ curl https://raw.githubusercontent.com/stefanwimmer128/proj128/v1-dev/install | bash
 
 $ yarn (global) add proj128
 
